@@ -341,28 +341,35 @@ function _switch_font(_opt){
 }
 
 function _convertFont() {
-    _html = document.body.innerHTML;  
-    _title = document.title;
-  
-    function walkTextNodes(node, callback) {
-        if (node.nodeType === Node.TEXT_NODE) {
-            callback(node);
-        } else {
-            let child = node.firstChild;
-            while (child) {
-                walkTextNodes(child, callback);
-                child = child.nextSibling;
-            }
-        }
-    }
+  _html = document.body.innerHTML;
+  _title = document.title;
 
-    var convertFunc = (_curFont - _origFont == 1) ? Z1_Uni : Uni_Z1;
-  
-    walkTextNodes(document.body, function(textNode) {
-        textNode.nodeValue = convertFunc(textNode.nodeValue);
+  if(/&#[0-9]{1,4};/.test(_html)) {
+    _html = _html.replace(/&#([0-9]{1,4});/g, function($0, $1) {
+      return String.fromCharCode($1);
     });
+  }
 
-    document.title = convertFunc(_title);
+  var a2 = _html.split(/[\u1000-\u109F]+/);
+  var _tmp = a2[0];
+  var b2 = _html.split(/[^\u1000-\u109F]+/);
+
+  if(_curFont - _origFont == 1) {
+    b2 = Z1_Uni(b2.join('||')).split("||");
+    _tmp2 = Z1_Uni(_title);
+  } else {
+    b2 = Uni_Z1(b2.join('||')).split("||");
+    _tmp2 = Uni_Z1(_title);
+  }
+
+  // loop to rebuild the string properly
+  for(var i=0; i < b2.length - 1; i++) {
+    _tmp += b2[i] + a2[i + 1];
+  }
+  _tmp += b2[b2.length - 1];
+
+  document.body.innerHTML = _tmp;
+  document.title = _tmp2;
 }
 
 function addStyle(_opt){
