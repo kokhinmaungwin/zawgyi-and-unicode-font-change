@@ -1,4 +1,4 @@
-# zawgyi-and-unicode-font-change
+# zawgyi and unicode font change
 # Myanmar Font Converter
 
 This project contains JavaScript functions for converting Myanmar font encodings between Unicode and Zawgyi.
