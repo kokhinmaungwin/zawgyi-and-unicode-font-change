@@ -340,37 +340,25 @@ function _switch_font(_opt){
 	document.body.appendChild(txtdiv);
 }
 
-function _convertFont() {
-  _html = document.body.innerHTML;
-  _title = document.title;
-
-  if(/&#[0-9]{1,4};/.test(_html)) {
-    _html = _html.replace(/&#([0-9]{1,4});/g, function($0, $1) {
-      return String.fromCharCode($1);
-    });
-  }
-
-  var a2 = _html.split(/[\u1000-\u109F]+/);
-  var _tmp = a2[0];
-  var b2 = _html.split(/[^\u1000-\u109F]+/);
-
-  if(_curFont - _origFont == 1) {
-    b2 = Z1_Uni(b2.join('||')).split("||");
-    _tmp2 = Z1_Uni(_title);
-  } else {
-    b2 = Uni_Z1(b2.join('||')).split("||");
-    _tmp2 = Uni_Z1(_title);
-  }
-
-  // loop to rebuild the string properly
-  for(var i=0; i < b2.length - 1; i++) {
-    _tmp += b2[i] + a2[i + 1];
-  }
-  _tmp += b2[b2.length - 1];
-
-  document.body.innerHTML = _tmp;
-  document.title = _tmp2;
+function _convertFont(){
+	_html=document.body.innerHTML;
+	_title=document.title;
+	if(/&#[0-9]{1,4};/.test(_html)) _html=_html.replace(/&#([0-9]{1,4});/g,function($0,$1){return String.fromCharCode($1);});
+	var a2=_html.split(/[\u1000-\u109F]+/);var _tmp=a2[0];
+	var b2=_html.split(/[^\u1000-\u109F]+/);
+	if(_curFont-_origFont==1){
+		b2 = Z1_Uni(b2.join('||')).split("||");
+		_tmp2= Z1_Uni(_title);
+	}else{
+		b2=Uni_Z1(b2.join('||')).split("||");
+		_tmp2=Uni_Z1(_title);
+	}
+	if(isIE){for(var i=0;i<b2.length-1;i++) _tmp+=b2[i]+a2[i+1];_tmp+=b2[i];}
+	else{for(var i=1;i<b2.length-1;i++) _tmp+=b2[i]+a2[i];}
+	document.body.innerHTML=_tmp;
+	document.title=_tmp2;
 }
+
 
 function addStyle(_opt){
 	var ss1 = document.createElement('style');
