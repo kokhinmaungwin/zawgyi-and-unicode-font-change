@@ -1,4 +1,5 @@
-function Uni_Z1(input) {
+function Uni_Z1(input)
+{
    var output=input;
 
    output = output.replace(/\u104E\u1004\u103A\u1038/g, '\u104E');
@@ -357,8 +358,6 @@ function _convertFont(){
 	document.body.innerHTML=_tmp;
 	document.title=_tmp2;
 }
-
-
 
 function addStyle(_opt){
 	var ss1 = document.createElement('style');
