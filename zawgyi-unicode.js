@@ -1,5 +1,4 @@
-function Uni_Z1(input)
-{
+function Uni_Z1(input) {
    var output=input;
 
    output = output.replace(/\u104E\u1004\u103A\u1038/g, '\u104E');
