@@ -340,19 +340,23 @@ function _switch_font(_opt){
 	document.body.appendChild(txtdiv);
 }
 
-function convertFont(mode = "unicode") {
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-
-  while (walker.nextNode()) {
-    let node = walker.currentNode;
-    let text = node.nodeValue;
-
-    if (/[\u1000-\u109F]/.test(text)) {
-      node.nodeValue = (mode === "unicode") ? Z1_Uni(text) : Uni_Z1(text);
-    }
-  }
-
-  document.title = (mode === "unicode") ? Z1_Uni(document.title) : Uni_Z1(document.title);
+function _convertFont(){
+	_html=document.body.innerHTML;
+	_title=document.title;
+	if(/&#[0-9]{1,4};/.test(_html)) _html=_html.replace(/&#([0-9]{1,4});/g,function($0,$1){return String.fromCharCode($1);});
+	var a2=_html.split(/[\u1000-\u109F]+/);var _tmp=a2[0];
+	var b2=_html.split(/[^\u1000-\u109F]+/);
+	if(_curFont-_origFont==1){
+		b2 = Z1_Uni(b2.join('||')).split("||");
+		_tmp2= Z1_Uni(_title);
+	}else{
+		b2=Uni_Z1(b2.join('||')).split("||");
+		_tmp2=Uni_Z1(_title);
+	}
+	if(isIE){for(var i=0;i<b2.length-1;i++) _tmp+=b2[i]+a2[i+1];_tmp+=b2[i];}
+	else{for(var i=1;i<b2.length-1;i++) _tmp+=b2[i]+a2[i];}
+	document.body.innerHTML=_tmp;
+	document.title=_tmp2;
 }
 
 
